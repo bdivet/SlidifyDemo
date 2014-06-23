@@ -1,0 +1,66 @@
+---
+title       : Coursera on Developing Data Product
+subtitle    : Option Pricing Shiny Application
+author      : B Divet
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+
+---
+
+## Application overview
+
+
+1. Ability to value options and visualize prices and first order derivatives (greeks) over a wide range of underlying asset price   
+  
+  
+
+2. Links to wikipedia pages on options and Black-Scholes   
+   
+   
+
+3. Ability to play with all releveant pricing parameters, in particular volatility  
+
+--- .class #id 
+
+## Default settings
+1 year European call option struck at 100, with volatility of 30% and interest rate of 1%:  
+```{r echo=FALSE, fig.width=13}
+      t=1;X=100;r=0.01;v=0.3;S=c(seq(from=10,to=80,by=10),seq(from=80,to=95,by=5),seq(from=95,to=105,by=2),seq(from=105,to=120,by=5),seq(from=120,to=200,by=10));cp="call"
+      d1 <- (log(S/X)+(r+0.5*v^2)*t)/(v*sqrt(t))
+      d2 <- d1-v*sqrt(t)
+      delta=pnorm(d1)
+      price=S*delta-X*exp(-r*t)*pnorm(d2) 
+      gamma=exp(-d1^2/2)/S/v/sqrt(2*pi*t)
+      vega=gamma*t*S*S*v
+      df<-data.frame(price=price,delta=delta,gamma=gamma,vega=vega)
+      
+      par(mfcol=c(2,1),par(mar=c(3,4,1,0)))
+      plot(S,df$price,type='b',col='red',ylab=paste("PRICE CALL"))
+      segments(x0=0,y0=0,x1=100,y1=0,lty=3);segments(x0=100,y0=0,x1=200,y1=100,lty=3)
+      plot(S,df$delta,type='b',col='blue',ylab=paste("PRICE CALL"))
+      segments(x0=0,y0=0,x1=100,y1=0,lty=3);segments(x0=100,y0=0,x1=100,y1=1,lty=3);segments(x0=200,y0=1,x1=100,y1=1,lty=3)
+```
+
+
+---
+## Advantages 
+
+
+1. The application is hosted on a R-studio [shiny server] (https://bdivet.shinyapps.io/ShinyApp/) and does not have any dependency  
+
+
+
+2. It is a good interactive tutorial on [options]  (http://en.wikipedia.org/wiki/Option_%28finance%29)
+
+---
+## Thank you
+for your attention
+
+Useful links to [Slidify] (http://www.slidify.org/) website and to the Coursera course on [Developing Data Products] (https://class.coursera.org/devdataprod-002)  
+
+
